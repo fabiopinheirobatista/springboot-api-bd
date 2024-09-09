@@ -1,0 +1,10 @@
+
+ -----  -----  -----  ------  -----
+ |      |   |  |    |   ||    |   |
+ ---    -----  -----    ||    |   |
+ |      |   |  |    |   ||    |   |
+ |      |   |  -----  ------  -----
+
+                                       
+:: Minha API de teste ::
+Powered by Spring Boot ${spring-boot.formatted-version}
