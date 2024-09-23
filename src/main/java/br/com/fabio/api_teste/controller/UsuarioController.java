@@ -20,12 +20,25 @@ public class UsuarioController {
     private ModelMapper modelMapper;
 
     @GetMapping("/usuarios")
-    public ResponseEntity<Void> verificarUsuarioESenha(@RequestParam String email, @RequestParam String senha) {
-        boolean usuarioExiste = usuarioService.verificarUsuarioESenha(email, senha);
-        if (usuarioExiste) {
-            return ResponseEntity.ok().build();
+    public ResponseEntity<Void> verificarUsuario(@RequestParam(required = true) String email, @RequestParam(required = false) String senha) {
+        if (email != null && senha == null) {
+            boolean emailExiste = usuarioService.verificarEmail(email);
+            if (emailExiste) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(404).build();
+            }
+        }
+
+        if (email != null && senha != null) {
+            boolean usuarioExiste = usuarioService.verificarUsuarioESenha(email, senha);
+            if (usuarioExiste) {
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.status(404).build();
+            }
         } else {
-            return ResponseEntity.status(404).build();
+            return ResponseEntity.badRequest().build();
         }
     }
 

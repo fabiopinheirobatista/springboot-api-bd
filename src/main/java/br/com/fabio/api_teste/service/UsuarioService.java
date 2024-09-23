@@ -68,6 +68,10 @@ public class UsuarioService {
         return usuarioRepository.existsByEmailAndSenha(email, senha);
     }
 
+    public boolean verificarEmail(String email) {
+        return usuarioRepository.existsByEmail(email);
+    }
+
     public void atualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário com ID " + id + " não encontrado."));
