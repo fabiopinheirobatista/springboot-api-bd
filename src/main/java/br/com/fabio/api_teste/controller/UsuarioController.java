@@ -2,6 +2,7 @@ package br.com.fabio.api_teste.controller;
 
 import br.com.fabio.api_teste.controller.dto.UsuarioDTO;
 import br.com.fabio.api_teste.service.UsuarioService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,15 +16,22 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @GetMapping("/usuarios")
+    public ResponseEntity<Void> verificarUsuarioESenha(@RequestParam String email, @RequestParam String senha) {
+        boolean usuarioExiste = usuarioService.verificarUsuarioESenha(email, senha);
+        if (usuarioExiste) {
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.status(404).build();
+        }
+    }
+
     @GetMapping("/usuariosmocados")
     public List<UsuarioDTO> listarUsuariosMocados() {
         return usuarioService.listarUsuariosMocados();
-    }
-
-    @GetMapping("/usuarios")
-    public ResponseEntity<List<UsuarioDTO>> listarUsuarios() {
-        List<UsuarioDTO> usuarios = usuarioService.listarUsuarios();
-        return ResponseEntity.ok(usuarios);
     }
 
     @GetMapping("/listar-usuarios-ordenados-nome")
@@ -39,7 +47,7 @@ public class UsuarioController {
     }
 
     @PostMapping("/cadastrar-usuarios")
-    public ResponseEntity <UsuarioDTO> cadastrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
+    public ResponseEntity<UsuarioDTO> cadastrarUsuario(@RequestBody UsuarioDTO usuarioDTO) {
         UsuarioDTO usuarioCadastrado = usuarioService.cadastrarUsuario(usuarioDTO);
         return ResponseEntity.ok(usuarioCadastrado);
     }

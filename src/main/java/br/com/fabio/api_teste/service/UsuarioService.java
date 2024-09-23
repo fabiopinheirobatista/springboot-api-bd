@@ -64,6 +64,10 @@ public class UsuarioService {
         return new UsuarioDTO(usuarioRepository.save(usuario).getId(), usuario.getNome(), usuario.getEmail(), usuario.getIdade());
     }
 
+    public boolean verificarUsuarioESenha(String email, String senha) {
+        return usuarioRepository.existsByEmailAndSenha(email, senha);
+    }
+
     public void atualizarUsuario(Long id, UsuarioDTO usuarioDTO) {
         Usuario usuario = usuarioRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Usuário com ID " + id + " não encontrado."));
@@ -91,5 +95,9 @@ public class UsuarioService {
         }
 
         usuarioRepository.deleteById(id);
+    }
+
+    public List<Usuario> ListarUsuarios() {
+        return usuarioRepository.findAll();
     }
 }

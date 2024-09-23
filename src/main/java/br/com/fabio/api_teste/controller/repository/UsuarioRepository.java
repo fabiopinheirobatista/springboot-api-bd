@@ -10,4 +10,6 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Long> {
     boolean existsByEmail(String email);
 
     List<Usuario> findByNomeContainingIgnoreCaseOrderByNomeAsc(String nome);
+
+    boolean existsByEmailAndSenha(String email, String senha);
 }
