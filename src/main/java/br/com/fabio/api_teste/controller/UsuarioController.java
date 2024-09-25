@@ -21,21 +21,24 @@ public class UsuarioController {
 
     @GetMapping("/usuarios")
     public ResponseEntity<Void> verificarUsuario(@RequestParam(required = true) String email, @RequestParam(required = false) String senha) {
-        if (email != null && senha == null) {
+        if (email != null && senha != null) {
+            boolean EmailESenhaExistem = usuarioService.verificarUsuarioESenha(email, senha);
+            if (EmailESenhaExistem) {
+                return ResponseEntity.ok().build();
+            }
+
             boolean emailExiste = usuarioService.verificarEmail(email);
             if (emailExiste) {
-                return ResponseEntity.ok().build();
-            } else {
-                return ResponseEntity.status(404).build();
+                return ResponseEntity.status(403).build();
             }
         }
 
-        if (email != null && senha != null) {
-            boolean usuarioExiste = usuarioService.verificarUsuarioESenha(email, senha);
-            if (usuarioExiste) {
-                return ResponseEntity.ok().build();
-            } else {
+        if (email != null) {
+            boolean emailExiste = usuarioService.verificarEmail(email);
+            if (emailExiste) {
                 return ResponseEntity.status(404).build();
+            } else {
+                return ResponseEntity.status(405).build();
             }
         } else {
             return ResponseEntity.badRequest().build();
